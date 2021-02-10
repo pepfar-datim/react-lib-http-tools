@@ -1,6 +1,6 @@
-export const sum = (a: number, b: number) => {
-  if ('development' === process.env.NODE_ENV) {
-    console.log('boop');
-  }
-  return a + b;
-};
+export * from "./modules/prod/methods";
+export {apiInit,isTestEnv} from "./modules/shared/config";
+export {testAs} from "./modules/test/getData/getData.service";
+export {initTestApiCache} from "./modules/test/getData/httpStore.service";
+export {registerSendMock} from "./modules/test/sendData/mockSendData.service";
+export {registerGetMock} from "./modules/test/getData/getMock.service";

@@ -31,7 +31,7 @@
     "singleQuote": true,
     "trailingComma": "es5"
   },
-  "name": "api",
+  "name": "@dhis2-app/api",
   "author": "jakub-bao",
   "module": "dist/api.esm.js",
   "size-limit": [
