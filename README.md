@@ -1,103 +1,62 @@
-# TSDX User Guide
+# JavaScript Test-friendly Fetch
 
-Congrats! You just saved yourself hours of work by bootstrapping this project with TSDX. Let’s get you oriented with what’s here and how to use it.
+This is a slim layer processing HTTP calls from your front-end to your server.
+It comes with:
+1. Response caching to make tests ultra-fast
+2. Response mocking so you don't have to change server data with each tests. Makes tests so much faster and parallel friendly.
+3. Easy switching of users and authentication.
 
-> This TSDX setup is meant for developing libraries (not apps!) that can be published to NPM. If you’re looking to build a Node app, you could use `ts-node-dev`, plain `ts-node`, or simple `tsc`.
-
-> If you’re new to TypeScript, checkout [this handy cheatsheet](https://devhints.io/typescript)
-
-## Commands
-
-TSDX scaffolds your new library inside `/src`.
-
-To run TSDX, use:
-
+## Installation
 ```bash
-npm start # or yarn start
+npm i @dhis2-app/api
 ```
 
-This builds to `/dist` and runs the project in watch mode so any edits you save inside `src` causes a rebuild to `/dist`.
+## Usage
 
-To do a one-off build, use `npm run build` or `yarn build`.
+### Register server base URL
+Before doing any HTTP calls you have to register your server base URL and also provide information in which environment you are (`test`,`development`,`production`). You can simply copy the line below:
+```javascript
+import {apiInit} from "@dhis2-app/api";
 
-To run tests, use `npm test` or `yarn test`.
-
-## Configuration
-
-Code quality is set up for you with `prettier`, `husky`, and `lint-staged`. Adjust the respective fields in `package.json` accordingly.
-
-### Jest
-
-Jest tests are set up to run with `npm test` or `yarn test`.
-
-### Bundle Analysis
-
-[`size-limit`](https://github.com/ai/size-limit) is set up to calculate the real cost of your library with `npm run size` and visualize the bundle with `npm run analyze`.
-
-#### Setup Files
-
-This is the folder structure we set up for you:
-
-```txt
-/src
-  index.tsx       # EDIT THIS
-/test
-  blah.test.tsx   # EDIT THIS
-.gitignore
-package.json
-README.md         # EDIT THIS
-tsconfig.json
+apiInit('http://www.google.com/',process.env.NODE_ENV);
 ```
 
-### Rollup
+### Using GET to retrieve data
 
-TSDX uses [Rollup](https://rollupjs.org) as a bundler and generates multiple rollup configs for various module formats and build settings. See [Optimizations](#optimizations) for details.
+Simple GET using a promise:
+```javascript
+import {getData} from "@dhis2-app/api";
 
-### TypeScript
-
-`tsconfig.json` is set up to interpret `dom` and `esnext` types, as well as `react` for `jsx`. Adjust according to your needs.
-
-## Continuous Integration
-
-### GitHub Actions
-
-Two actions are added by default:
-
-- `main` which installs deps w/ cache, lints, tests, and builds on all pushes against a Node and OS matrix
-- `size` which comments cost comparison of your library on every pull request using [`size-limit`](https://github.com/ai/size-limit)
-
-## Optimizations
-
-Please see the main `tsdx` [optimizations docs](https://github.com/palmerhq/tsdx#optimizations). In particular, know that you can take advantage of development-only optimizations:
-
-```js
-// ./types/index.d.ts
-declare var __DEV__: boolean;
-
-// inside your code...
-if (__DEV__) {
-  console.log('foo');
+function getUsers():Promise<User[]> {
+    return getData('/users').then(users=>{
+            //do something
+            return users;
+        });
 }
 ```
 
-You can also choose to install and use [invariant](https://github.com/palmerhq/tsdx#invariant) and [warning](https://github.com/palmerhq/tsdx#warning) functions.
+Simple get using `await`:
+```javascript
+import {getData} from "@dhis2-app/api";
 
-## Module Formats
+async function getUsers():Promise<User[]>{
+    let users = await getData('/users');
+    // do something
+    return users;
+}
+```
 
-CJS, ESModules, and UMD module formats are supported.
+### Mocking server response during tests
+Now imagine you are writing a test and no matter what's in the database you want the result of GET from `/users` to return two exact objects. It's as simple as:
+```javascript
+import {registerGetMock} from "@dhis2-app/api";
 
-The appropriate paths are configured in `package.json` and `dist/index.js` accordingly. Please report if any issues are found.
+const mockedResponse = [{name: 'John', name: 'Bob'}];
 
-## Named Exports
-
-Per Palmer Group guidelines, [always use named exports.](https://github.com/palmerhq/typescript#exports) Code split inside your React app instead of your React library.
-
-## Including Styles
-
-There are many ways to ship styles, including with CSS-in-JS. TSDX has no opinion on this, configure how you like.
-
-For vanilla CSS, you can include it at the root directory and add it to the `files` section in your `package.json`, so that it can be imported separately by your users and run through their bundler's loader.
-
-## Publishing to NPM
-
-We recommend using [np](https://github.com/sindresorhus/np).
+test('Should receive two users', async ()=> {
+    registerGetMock('/users', mockedResponse);
+    // now you can test your app and when your front-end code queries `/users` it will receive the `mockedResponse` from above
+    screen.getByText('John');
+    screen.getByText('Bob');
+});
+```

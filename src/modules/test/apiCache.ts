@@ -3,7 +3,7 @@ import {mockSendData} from "./sendData/mockSendData.service";
 import {baseUrl, isTestEnv} from "../shared/config";
 
 export function getViaTestCache(url:string, options?: any):Promise<any>{
-    if (!baseUrl) throw new Error(`Base url not set. Please set by calling 'setBaseUrl' before issuing any http calls.`);
+    if (!baseUrl) throw new Error(`'@dhis2-api/api' not initialized. Please run 'apiInit' before first HTTP call.`);
     if (!isTestEnv()) return getDataInProd(url, options);
     else return getDataInTest(url);
 }
