@@ -36,9 +36,8 @@ function sendDataInProd(method:string, url:string, data:any){
             'Content-Type': contentType,
         },
         body: processedData
+    }).then((response)=>{
+        if (!response.ok) throw response;
+        return response;
     })
-        .then((response)=>{
-            if (!response.ok) throw response;
-            return response;
-        })
 }
