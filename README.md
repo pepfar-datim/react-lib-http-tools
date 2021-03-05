@@ -1,6 +1,5 @@
 # JavaScript Test-friendly Fetch
 
-
 This is a slim layer processing HTTP calls from your front-end to your server.
 It comes with:
 1. Response caching to make tests ultra-fast
