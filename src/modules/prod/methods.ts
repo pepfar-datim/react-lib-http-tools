@@ -8,8 +8,8 @@ export function makeUrl(url:string):string{
 export function getData(url:string, options?:any):Promise<any>{
     return getViaTestCache(makeUrl(url),options);
 }
-export function postData(url:string, data:any):Promise<any>{
-    return httpCall('POST', url, data)
+export function postData(url:string, data:any, contentType?:string):Promise<any>{
+    return httpCall('POST', url, data, contentType)
 }
 
 export function postFormData(url:string, data:string):Promise<any>{
@@ -28,6 +28,6 @@ export function deleteData(url:string, data?:any):Promise<any>{
     return httpCall('DELETE', url, data||null);
 }
 
-function httpCall(method:string, url:string, data:any):Promise<any>{
-    return sendDataViaTest(method, makeUrl(url), data);
+function httpCall(method:string, url:string, data:any, content?:string):Promise<any>{
+    return sendDataViaTest(method, makeUrl(url), data, content);
 }

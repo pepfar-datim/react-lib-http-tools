@@ -8,8 +8,8 @@ export function getViaTestCache(url:string, options?: any):Promise<any>{
     else return getDataInTest(url);
 }
 
-export function sendDataViaTest(method:string, url:string, data:any):Promise<any>{
-    if (!isTestEnv()) return sendDataInProd(method, url, data);
+export function sendDataViaTest(method:string, url:string, data:any, contentType:string='application/json'):Promise<any>{
+    if (!isTestEnv()) return sendDataInProd(method, url, data, contentType);
     else return mockSendData(method, url, data);
 }
 
@@ -18,7 +18,7 @@ export function getDataInProd(url:string, options?:any):Promise<object>{
         .then(resp => resp.json());
 }
 
-function sendDataInProd(method:string, url:string, data:any, contentType:string='application/json'){
+function sendDataInProd(method:string, url:string, data:any, contentType:string){
     return fetch(url, {
         credentials: 'include',
         method: method,
