@@ -18,24 +18,14 @@ export function getDataInProd(url:string, options?:any):Promise<object>{
         .then(resp => resp.json());
 }
 
-function sendDataInProd(method:string, url:string, data:any){
-    let processedData, contentType;
-    if (typeof data==='object') {
-        contentType = 'application/json';
-        processedData = JSON.stringify(data);
-    } else if (typeof data==='string'){
-        contentType = 'application/x-www-form-urlencoded';
-        processedData = data;
-    } else {
-        throw new Error(`Unrecognized data type to send`);
-    }
+function sendDataInProd(method:string, url:string, data:any, contentType:string='application/json'){
     return fetch(url, {
         credentials: 'include',
         method: method,
         headers: {
             'Content-Type': contentType,
         },
-        body: processedData
+        body: contentType==='application/json'?JSON.stringify(data):data
     }).then((response)=>{
         if (!response.ok) throw response;
         return response;
