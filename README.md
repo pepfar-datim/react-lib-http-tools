@@ -1,4 +1,5 @@
 # JavaScript Test-friendly Fetch
+**Repo Owner:** Ben Guaraldi [@benguaraldi](https://github.com/benguaraldi)
 
 
 This is a slim layer processing HTTP calls from your front-end to your server.

@@ -31,7 +31,7 @@
     "singleQuote": true,
     "trailingComma": "es5"
   },
-  "name": "@dhis2-app/api",
+  "name": "@pepfar-react-lib/http-tools",
   "author": "jakub-bao",
   "module": "dist/api.esm.js",
   "size-limit": [
@@ -54,6 +54,6 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/dhis2-app/api.git"
+    "url": "https://github.com/pepfar-datim/react-lib-http-tools.git"
   }
 }
