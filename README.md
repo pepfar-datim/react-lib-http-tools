@@ -10,7 +10,7 @@ It comes with:
 
 ## Installation
 ```bash
-npm i @dhis2-app/api
+npm i @pepfar-react-lib/http-tools
 ```
 
 ## Usage
@@ -18,7 +18,7 @@ npm i @dhis2-app/api
 ### Register server base URL
 Before doing any HTTP calls you have to register your server base URL and also provide information in which environment you are (`test`,`development`,`production`). You can simply copy the line below:
 ```javascript
-import {apiInit} from "@dhis2-app/api";
+import {apiInit} from "@pepfar-react-lib/http-tools";
 
 apiInit('http://www.google.com/',process.env.NODE_ENV);
 ```
@@ -27,7 +27,7 @@ apiInit('http://www.google.com/',process.env.NODE_ENV);
 
 Simple GET using a promise:
 ```javascript
-import {getData} from "@dhis2-app/api";
+import {getData} from "@pepfar-react-lib/http-tools";
 
 function getUsers():Promise<User[]> {
     return getData('/users').then(users=>{
@@ -39,7 +39,7 @@ function getUsers():Promise<User[]> {
 
 Simple get using `await`:
 ```javascript
-import {getData} from "@dhis2-app/api";
+import {getData} from "@pepfar-react-lib/http-tools";
 
 async function getUsers():Promise<User[]>{
     let users = await getData('/users');
@@ -51,7 +51,7 @@ async function getUsers():Promise<User[]>{
 ### Mocking server response during tests
 Now imagine you are writing a test and no matter what's in the database you want the result of GET from `/users` to return two exact objects. It's as simple as:
 ```javascript
-import {registerGetMock} from "@dhis2-app/api";
+import {registerGetMock} from "@pepfar-react-lib/http-tools";
 
 const mockedResponse = [{name: 'John', name: 'Bob'}];
 
