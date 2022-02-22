@@ -30,6 +30,7 @@ function sendDataInProd(method:string, url:string, data:any, contentType:string)
         let result = response.json()
         if (!response.ok) throw response;
         if (result["status"]==="ERROR") throw response;
+        
         return response;
     })
 }
