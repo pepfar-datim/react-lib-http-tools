@@ -27,7 +27,9 @@ function sendDataInProd(method:string, url:string, data:any, contentType:string)
         },
         body: contentType==='application/json'?JSON.stringify(data):data
     }).then((response)=>{
+        let result = response.json()
         if (!response.ok) throw response;
+        if (result["status"]==="ERROR") throw response;
         return response;
     })
 }
